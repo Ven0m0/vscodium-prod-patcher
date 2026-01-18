@@ -10,9 +10,7 @@ license = "GPL-3.0"
 requires-python = ">=3.13"
 dependencies = [
     "vscodium-prod-patcher-alpm-ini==0.1.0",
-    "mashumaro>=3.15",
-    "toml>=0.10.2",
-    "tomli>=2.2.1",
+    "mashumaro>=3.17",
     "tomli-w>=1.2.0",
     "vscodium-prod-patcher-alpm-ini",
     "pyalpm>=0.10.12",
@@ -27,20 +25,21 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 config-tui = [
-    "inquirer>=3.4.0",
+    "inquirer>=3.4.1",
 ]
 dev = [
-    "flake8>=7.2.0",
+    "flake8>=7.3.0",
     "flake8-2020>=1.8.1",
     "flake8-breakpoint>=1.1.0",
     "flake8-bugbear>=24.12.12",
-    "flake8-builtins>=2.5.0",
+    "flake8-builtins>=3.1.0",
     "flake8-commas>=4.0.0",
     "flake8-comments>=0.1.2",
     "flake8-eradicate>=1.5.0",
     "flake8-executable>=2.1.3",
     "flake8-fixme>=1.1.1",
     "flake8-isort>=6.1.2",
+    "flake8-plugin-utils>=1.3.3",
     "flake8-raise>=0.0.5",
     "flake8-simplify>=0.21.0",
     "flake8-super>=0.1.3",
@@ -49,23 +48,3 @@ dev = [
     "pylint>=3.3.7",
     "types-toml>=0.10.8.20240310",
 ]
-
-[tool.isort]
-include_trailing_comma = true
-multi_line_output = "VERTICAL_GRID_GROUPED"
-
-[tool.mypy]
-check_untyped_defs = true
-mypy_path = "typings"
-
-[[tool.mypy.overrides]]
-module = ["inquirer.*", "pycman.*"]
-follow_untyped_imports = true
-
-[tool.uv.workspace]
-members = [
-    "src/vscodium_prod_patcher_alpm_ini",
-]
-
-[tool.uv.sources]
-vscodium-prod-patcher-alpm-ini = { workspace = true }
