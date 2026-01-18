@@ -1,8 +1,8 @@
 import os
+import tomllib
+import tomli_w
 from pathlib import Path
 from typing import Any, Optional
-
-import toml
 
 from ..consts import ENCODING
 from .paths import CONFIG_DIR, CONFIG_PATH
@@ -14,13 +14,15 @@ EXTENSION_SOURCES = ["openvsx", "microsoft"]
 
 
 def toml_load(path: Path):
-    with open(path, "rt", encoding=ENCODING) as file:
-        return toml.load(file)
+    # tomllib requires binary mode
+    with open(path, "rb") as file:
+        return tomllib.load(file)
 
 
 def toml_save(path: Path, obj: Any):
+    # tomli_w produces a string; write it as utf-8 text
     with open(path, "wt", encoding=ENCODING) as file:
-        toml.dump(obj, file)
+        file.write(tomli_w.dumps(obj))
 
 
 def load_config() -> Config:
@@ -30,8 +32,8 @@ def load_config() -> Config:
         return Config()
 
 
-def get_config(force_reload=True) -> Config:
-    # pylint: disable=W0603
+def get_config(force_reload: bool = False) -> Config:
+    # pylint: disable=global-statement
     global CONFIG
     if CONFIG is None or force_reload:
         CONFIG = load_config()
@@ -39,8 +41,6 @@ def get_config(force_reload=True) -> Config:
 
 
 def save_config(config: Config):
-    # pylint: disable=W0603
-    global CONFIG
-    CONFIG = config
-    os.makedirs(CONFIG_DIR, exist_ok=True)
+    if not CONFIG_DIR.exists():
+        os.makedirs(CONFIG_DIR)
     toml_save(CONFIG_PATH, config.to_dict())
