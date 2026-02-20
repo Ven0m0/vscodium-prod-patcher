@@ -83,7 +83,7 @@ Implement a granular selection mechanism that allows users to enable specific fe
 
 2.  **Update Configuration Schema:**
     *   Modify `src/vscodium_prod_patcher/config/schema.py`: `VscPatchConfig`.
-    *   Change `extra_features: Optional[bool]` to `enabled_features: Optional[list[str]]` (or `extra_features: list[str]`).
+    *   Change `extra_features: Optional[bool]` to `extra_features: Optional[list[str]]`.
     *   Retain backward compatibility by interpreting `extra_features=True` as enabling all categories.
 
 3.  **Enhance TUI:**
