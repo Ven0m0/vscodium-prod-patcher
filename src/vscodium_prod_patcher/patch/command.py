@@ -1,8 +1,9 @@
+from typing import Optional
 from ..patch import patch_pkg
 from ..shared import err
-from ..utils.backup import backup_editor_data, restore_editor_data
+from ..utils.backup import backup_editor_data, restore_editor_data, get_backups
 
-PATCH_SUBCMDS = ["apply", "backup", "restore"]
+PATCH_SUBCMDS = ["apply", "backup", "restore", "list-backups"]
 
 
 def patch_apply(package_name: str, from_backup: bool):
@@ -13,8 +14,21 @@ def patch_backup(package_name: str):
     backup_editor_data(package_name)
 
 
-def patch_restore(package_name: str):
-    restore_editor_data(package_name)
+def patch_restore(package_name: str, backup_id: Optional[str] = None):
+    try:
+        restore_editor_data(package_name, backup_id)
+    except FileNotFoundError as e:
+        err(str(e))
+
+
+def patch_list_backups(package_name: str):
+    backups = get_backups(package_name)
+    if not backups:
+        print(f"No backups found for {package_name}")
+        return
+    print(f"Backups for {package_name}:")
+    for b in backups:
+        print(f"- {b}")
 
 
 def patch_main(args):
@@ -24,6 +38,8 @@ def patch_main(args):
         case "backup":
             patch_backup(args.package_name)
         case "restore":
-            patch_restore(args.package_name)
+            patch_restore(args.package_name, getattr(args, "backup_id", None))
+        case "list-backups":
+            patch_list_backups(args.package_name)
         case _:
             err("bad subcommand")

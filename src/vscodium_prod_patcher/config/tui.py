@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from ..hooks.install import write_update_hook_cfg
 from ..shared import eprint
@@ -18,7 +18,7 @@ from ..utils.friendlybool import (
 )
 from .main import get_config, save_config
 from .utils import list_vscodium_packages, try_guess_editor_meta
-
+from ..consts import FEATURE_CATEGORIES
 
 def prompt_for_editor_meta_config(pkg: str) -> Optional[VscEditorMetaConfig]:
     print("Manually configure", pkg)
@@ -89,6 +89,13 @@ def config_packages():
 def config_features():
     config = get_config()
     features = config.patch
+
+    default_features = []
+    if features.extra_features is True:
+        default_features = list(FEATURE_CATEGORIES.keys())
+    elif isinstance(features.extra_features, list):
+        default_features = features.extra_features
+
     questions = [
         inquirer.List(
             "extensions_source",
@@ -96,12 +103,11 @@ def config_features():
             ["openvsx", "microsoft"],
             default=features.extension_source,
         ),
-        inquirer.List(
+        inquirer.Checkbox(
             "extra_features",
-            "Do you want to enable extra features that may be required by some"
-            + " Micro$oft extensions?",
-            FRIENDLY_BOOL_STRS,
-            default=friendly_bool_to_str_opt(features.extra_features),
+            "Select extra features to enable (Space to select, Enter to confirm)",
+            choices=list(FEATURE_CATEGORIES.keys()),
+            default=default_features,
         ),
         inquirer.Text(
             "data_dir",
@@ -112,9 +118,9 @@ def config_features():
     answers_maybe = inquirer.prompt(questions)
     assert answers_maybe is not None
     answers: dict[str, Any] = answers_maybe
-    extra_features = friendly_str_to_bool(answers["extra_features"])
+
+    features.extra_features = answers["extra_features"]
     features.extension_source = answers["extensions_source"]
-    features.extra_features = extra_features
     data_dir: str = answers["data_dir"]
     if not data_dir:
         features.data_dir = None
