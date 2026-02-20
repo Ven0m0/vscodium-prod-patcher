@@ -24,7 +24,7 @@ Merge the `vscodium_prod_patcher_alpm_ini` functionality directly into the main 
     *   Remove the `src/vscodium_prod_patcher_alpm_ini` directory entirely.
 
 4.  **Update Dependencies:**
-    *   In the root `pyproject.toml`, remove `"vscodium-prod-patcher-alpm-ini"` from `dependencies`.
+    *   In the root `pyproject.toml`, remove both occurrences of `"vscodium-prod-patcher-alpm-ini"` from `dependencies` (it is currently listed twice, on lines 12 and 15).
     *   Ensure `mashumaro` is listed in `dependencies` (it already is).
 
 ### Benefits
