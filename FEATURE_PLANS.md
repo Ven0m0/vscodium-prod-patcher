@@ -92,8 +92,8 @@ Implement a granular selection mechanism that allows users to enable specific fe
     *   List the available categories with descriptions.
 
 4.  **Refactor Patch Execution:**
-    *   In `patch_features`, verify if `config.extra_features` is a list. If so, only apply keys associated with the enabled categories.
-    *   If `config.extra_features` is a boolean `True`, apply all.
+    *   In `patch_features`, verify if `config.enabled_features` is a list. If so, only apply keys associated with the enabled categories.
+    *   If no specific categories are selected (for example, when migrating from a legacy `extra_features=True` configuration), apply all.
 
 ### Benefits
 *   **User Control:** Users can customize their VSCodium experience precisely.
