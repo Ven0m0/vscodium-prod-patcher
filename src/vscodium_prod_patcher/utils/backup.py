@@ -68,14 +68,8 @@ def get_backups(pkg: str) -> list[str]:
              # Check basic length to avoid grabbing partials if any
              backups.append(f.name)
 
-    # Sort descending (lexicographically, so timestamped ones come first if newer,
-    # and longer strings usually come after shorter ones if prefix matches...
-    # 'product.json' vs 'product.json.2023...'
-    # '.' is greater than nothing. So 'product.json.' > 'product.json'
-    # Wait. 'a' < 'b'. 'a' < 'aa'.
-    # But reverse sort? 'aa' > 'a'.
-    # So 'product.json.2023...' comes BEFORE 'product.json' in reverse sort.
-    # This means timestamped files (newer) are first. Correct.
+    # Sort in reverse lexicographical order so newer timestamped backups
+    # (e.g. 'product.json.YYYYMMDD-...') appear before the plain 'product.json'.
     backups.sort(reverse=True)
     return backups
 
