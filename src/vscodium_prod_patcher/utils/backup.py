@@ -65,8 +65,8 @@ def get_backups(pkg: str) -> list[str]:
         if f.name == "product.json":
             backups.append(f.name)
         elif f.name.startswith("product.json.") and len(f.name) > 13:
-             # Check basic length to avoid grabbing partials if any
-             backups.append(f.name)
+            # Check basic length to avoid grabbing partials if any
+            backups.append(f.name)
 
     # Sort in reverse lexicographical order so newer timestamped backups
     # (e.g. 'product.json.YYYYMMDD-...') appear before the plain 'product.json'.
