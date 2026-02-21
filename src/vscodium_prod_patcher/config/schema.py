@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 from mashumaro.mixins.toml import DataClassTOMLMixin
 
@@ -14,7 +14,7 @@ class VscDebugConfig:
 class VscPatchConfig:
     data_dir: Optional[Path] = field(default=None)
     extension_source: Optional[str] = field(default=None)
-    extra_features: Optional[bool] = field(default=None)
+    extra_features: Optional[Union[bool, list[str]]] = field(default=None)
 
 
 @dataclass

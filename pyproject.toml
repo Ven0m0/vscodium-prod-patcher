@@ -9,10 +9,8 @@ authors = [
 license = "GPL-3.0"
 requires-python = ">=3.13"
 dependencies = [
-    "vscodium-prod-patcher-alpm-ini==0.1.0",
     "mashumaro>=3.17",
     "tomli-w>=1.2.0",
-    "vscodium-prod-patcher-alpm-ini",
     "pyalpm>=0.10.12",
 ]
 

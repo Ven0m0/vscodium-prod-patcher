@@ -4,9 +4,6 @@ SRC_DIR := "src"
 build:
     python -m build --wheel --no-isolation \
         --outdir {{DIST_DIR}}
-    python -m build --wheel --no-isolation \
-        --outdir {{DIST_DIR}} \
-        src/vscodium_prod_patcher_alpm_ini
 
 clean:
     -rm -r dist

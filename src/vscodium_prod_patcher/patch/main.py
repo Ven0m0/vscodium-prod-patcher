@@ -6,12 +6,13 @@ from ..config.schema import Config, VscPatchConfig
 from ..config.utils import merge_patch_config
 from ..paths import BACKUPS_DIR, DATA_DIR
 from ..shared import json_load, json_write
-from ..utils.backup import backup_editor_data
+from ..utils.backup import backup_editor_data, get_backups
 from ..utils.print import pacinfo, pacwarn
 from .extension_galleries import (
     EXTENSIONS_MS_GALLERY, EXTENSIONS_OPENVSX_GALLERY,
     EXTENSIONS_OPENVSX_TRUSTED,
 )
+from ..consts import FEATURE_CATEGORIES
 
 FEATURES_PATCH_PATH = DATA_DIR / "patch/features-patch.json"
 TDKEY = "linkProtectionTrustedDomains"
@@ -20,10 +21,22 @@ TDKEY = "linkProtectionTrustedDomains"
 def patch_features(product: dict[str, Any], config: VscPatchConfig):
     extra_features = config.extra_features
     if not extra_features:
+        # False, None, or empty list
         return
     patch_data = json_load(FEATURES_PATCH_PATH)
-    for key in patch_data.keys():
-        product[key] = patch_data[key]
+
+    keys_to_apply: set[str] = set()
+
+    if extra_features is True:
+        keys_to_apply = set(patch_data.keys())
+    elif isinstance(extra_features, list):
+        for category in extra_features:
+            keys = FEATURE_CATEGORIES.get(category, [])
+            keys_to_apply.update(keys)
+
+    for key in keys_to_apply:
+        if key in patch_data:
+            product[key] = patch_data[key]
 
 
 def patch_data_dir(product: dict[str, Any], config: VscPatchConfig):
@@ -80,14 +93,23 @@ def patch_pkg(
     editor = config.packages[pkg]
     patch_config = merge_patch_config(config.patch, editor.patch_override)
 
-    backup_path = BACKUPS_DIR / pkg / "product.json"
-    if not backup_path.exists():
+    # Check if we have any backups
+    backups = get_backups(pkg)
+    if not backups:
+        # Create initial backup (snapshot of current state)
         backup_editor_data(pkg)
+        backups = get_backups(pkg) # Refresh list
 
     if from_backup:
-        input_path = backup_path
+        # Use latest backup
+        if not backups:
+            pacwarn("Warning", "Backup creation failed?")
+            input_path = editor.meta.abs_product_json_path
+        else:
+            input_path = BACKUPS_DIR / pkg / backups[0]
     else:
         input_path = editor.meta.abs_product_json_path
+
     product = json_load(input_path)
 
     pacinfo("Patching", pkg)

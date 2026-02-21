@@ -52,22 +52,32 @@ def main():
         dest="subcommand",
         required=True,
     )
-    patch_cmds = [
-        subp_patch.add_parser(subcmd)
-        for subcmd in ["backup", "restore"]
-    ]
+
+    # Define patch subcommands that take a package name
+    patch_cmds = {}
+    for subcmd in ["backup", "restore", "list-backups"]:
+        p = subp_patch.add_parser(subcmd)
+        p.add_argument("package_name", help="package name")
+        patch_cmds[subcmd] = p
+
+    # Add extra arguments to specific commands
+    patch_cmds["restore"].add_argument(
+        "--backup-id",
+        help="Specific backup timestamp or filename to restore",
+        default=None
+    )
+
     patch_apply = subp_patch.add_parser("apply")
     patch_apply.add_argument(
         "--from-backup",
         default=True,
-        type=bool,
+        type=lambda x: x.lower() not in ("false", "f", "0", "no", "n"),
     )
-    patch_cmds.append(patch_apply)
-    for patch_cmd in patch_cmds:
-        patch_cmd.add_argument(
-            "package_name",
-            help="package name",
-        )
+    patch_apply.add_argument(
+        "package_name",
+        help="package name",
+    )
+
     args = parser.parse_args()
     set_pacman_conf_path(args.pacman_config)
     match args.command:
