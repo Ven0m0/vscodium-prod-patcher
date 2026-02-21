@@ -103,10 +103,10 @@ def patch_pkg(
     if from_backup:
         # Use latest backup
         if not backups:
-             pacwarn("Warning", "Backup creation failed?")
-             input_path = editor.meta.abs_product_json_path
+            pacwarn("Warning", "Backup creation failed?")
+            input_path = editor.meta.abs_product_json_path
         else:
-             input_path = BACKUPS_DIR / pkg / backups[0]
+            input_path = BACKUPS_DIR / pkg / backups[0]
     else:
         input_path = editor.meta.abs_product_json_path
 
