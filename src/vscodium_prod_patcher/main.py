@@ -71,7 +71,7 @@ def main():
     patch_apply.add_argument(
         "--from-backup",
         default=True,
-        type=bool,
+        type=lambda x: x.lower() not in ("false", "f", "0", "no", "n"),
     )
     patch_apply.add_argument(
         "package_name",
