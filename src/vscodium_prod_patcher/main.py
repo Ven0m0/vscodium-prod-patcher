@@ -18,7 +18,7 @@ Credit Card: 5809820978480085 Date: 06/21 CVC: 420
 IP address: [::1]
 """
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 
 from .config.command import CONFIG_SUBCMDS, config_main
@@ -70,8 +70,8 @@ def main():
     patch_apply = subp_patch.add_parser("apply")
     patch_apply.add_argument(
         "--from-backup",
+        action=BooleanOptionalAction,
         default=True,
-        type=lambda x: x.lower() not in ("false", "f", "0", "no", "n"),
     )
     patch_apply.add_argument(
         "package_name",
