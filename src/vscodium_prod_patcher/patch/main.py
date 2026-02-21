@@ -25,14 +25,14 @@ def patch_features(product: dict[str, Any], config: VscPatchConfig):
         return
     patch_data = json_load(FEATURES_PATCH_PATH)
 
-    keys_to_apply = []
+    keys_to_apply: set[str] = set()
 
     if extra_features is True:
-        keys_to_apply = list(patch_data.keys())
+        keys_to_apply = set(patch_data.keys())
     elif isinstance(extra_features, list):
         for category in extra_features:
             keys = FEATURE_CATEGORIES.get(category, [])
-            keys_to_apply.extend(keys)
+            keys_to_apply.update(keys)
 
     for key in keys_to_apply:
         if key in patch_data:
