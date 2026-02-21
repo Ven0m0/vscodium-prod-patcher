@@ -19,7 +19,7 @@ product = None
 if __name__ == "__main__":
     for PRODUCT_JSON_LOCATION in PRODUCT_JSON_LOCATIONS:
         try:
-            with open(PRODUCT_JSON_LOCATION) as file:
+            with open(PRODUCT_JSON_LOCATION, encoding="utf-8") as file:
                 product = load(file)
             # Success! Break the loop.
             # PRODUCT_JSON_LOCATION now holds the correct path.
@@ -46,5 +46,5 @@ if __name__ == "__main__":
         }
         product.pop("linkProtectionTrustedDomains", None)
 
-    with open(PRODUCT_JSON_LOCATION, mode='w') as file:
+    with open(PRODUCT_JSON_LOCATION, mode='w', encoding='utf-8') as file:
         dump(product, file, indent=2)
