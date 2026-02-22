@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from sys import argv, stderr, stdout
 from json import load, dump, JSONDecodeError
 
