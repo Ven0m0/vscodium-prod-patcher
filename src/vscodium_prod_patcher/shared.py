@@ -34,7 +34,8 @@ def json_load(path: Path):
 
 def json_write(path: Path, obj: Any, *args, **kwargs):
     try:
+        content = json.dumps(obj, *args, **kwargs)
         with open(path, "wt", encoding=ENCODING) as file:
-            json.dump(obj, file, *args, **kwargs)
-    except (OSError, TypeError) as e:
+            file.write(content)
+    except (OSError, TypeError, ValueError) as e:
         err(f"Failed to write JSON to '{path}': {e}")
