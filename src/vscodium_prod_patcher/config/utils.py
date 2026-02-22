@@ -13,6 +13,8 @@ PRODUCT_JSON_SUFFIXES = [
     "product.json",
 ]
 
+_VSCODIUM_REGEX = re.compile(r"^(vs)?codium\S*$")
+
 
 def merge_patch_config(
     base: VscPatchConfig,
@@ -31,9 +33,8 @@ def merge_patch_config(
 
 
 def list_vscodium_packages(exclude_debug: bool = True) -> list[str]:
-    vscodium_regex = re.compile(r"^(vs)?codium\S*$")
     packages = MiniPacman().list_packages()
-    packages = list(filter(vscodium_regex.match, packages))
+    packages = list(filter(_VSCODIUM_REGEX.match, packages))
     packages.remove(NAME)
     if exclude_debug:
         def no_debug(pkg: str) -> bool:
