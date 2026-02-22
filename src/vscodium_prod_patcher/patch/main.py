@@ -57,9 +57,11 @@ def patch_marketplace_trusted_domains(product: dict[str, Any]):
         cur_domains = product[TDKEY]
     except KeyError:
         cur_domains = []
-    for domain in EXTENSIONS_OPENVSX_TRUSTED:
-        with suppress(ValueError):
-            cur_domains.remove(domain)
+
+    if cur_domains:
+        trusted_set = set(EXTENSIONS_OPENVSX_TRUSTED)
+        cur_domains = [d for d in cur_domains if d not in trusted_set]
+
     if not cur_domains:
         with suppress(KeyError):
             product.pop(TDKEY)
