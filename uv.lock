@@ -215,15 +215,15 @@ wheels = [
 
 [[package]]
 name = "flake8-isort"
-version = "6.1.2"
+version = "7.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "flake8" },
     { name = "isort" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7c/ea/2f2662d4fefa6ab335c7119cb28e5bc57c935a86a69a7f72df3ea5fe7b2c/flake8_isort-6.1.2.tar.gz", hash = "sha256:9d0452acdf0e1cd6f2d6848e3605e66b54d920e73471fb4744eef0f93df62d5d", size = 17756, upload-time = "2025-01-29T12:29:25.753Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/57/a4/4b170983fd2e9b5ecc40c88738db6dfb77e069c71be9a81f9893cdb8a0cc/flake8_isort-7.0.0.tar.gz", hash = "sha256:a677199d1197f826eb69084e7ac272f208f4583363285f43111c34272abe7e5d", size = 17796, upload-time = "2025-10-25T13:31:08.768Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b3/10/295e982874f2a94f309baf7c45f852a191c87d59bd846b1701332303783f/flake8_isort-6.1.2-py3-none-any.whl", hash = "sha256:549197dedf0273502fb74f04c080beed9e62a7eb70244610413d27052e78bd3b", size = 18385, upload-time = "2025-01-29T12:29:23.46Z" },
+    { url = "https://files.pythonhosted.org/packages/17/7d/907ef4135f6ede5187930d9ddd1f36564e07c6cdcd15ae8fb9849c9517e0/flake8_isort-7.0.0-py3-none-any.whl", hash = "sha256:c301a0e55fc77582348e636194b84b1a0baf0dfdaa6eddf3b0eeea75f8be7f36", size = 18383, upload-time = "2025-10-25T13:31:06.914Z" },
 ]
 
 [[package]]
