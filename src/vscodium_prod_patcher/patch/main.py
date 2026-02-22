@@ -1,21 +1,26 @@
 from contextlib import suppress
+from functools import lru_cache
 from typing import Any, Optional
 
 from ..config.main import get_config
 from ..config.schema import Config, VscPatchConfig
 from ..config.utils import merge_patch_config
+from ..consts import FEATURE_CATEGORIES
 from ..paths import BACKUPS_DIR, DATA_DIR
 from ..shared import json_load, json_write
 from ..utils.backup import backup_editor_data, get_backups
 from ..utils.print import pacinfo, pacwarn
-from .extension_galleries import (
-    EXTENSIONS_MS_GALLERY, EXTENSIONS_OPENVSX_GALLERY,
-    EXTENSIONS_OPENVSX_TRUSTED,
-)
-from ..consts import FEATURE_CATEGORIES
+from .extension_galleries import (EXTENSIONS_MS_GALLERY,
+                                  EXTENSIONS_OPENVSX_GALLERY,
+                                  EXTENSIONS_OPENVSX_TRUSTED)
 
 FEATURES_PATCH_PATH = DATA_DIR / "patch/features-patch.json"
 TDKEY = "linkProtectionTrustedDomains"
+
+
+@lru_cache(maxsize=1)
+def get_features_patch_data() -> dict[str, Any]:
+    return json_load(FEATURES_PATCH_PATH)
 
 
 def patch_features(product: dict[str, Any], config: VscPatchConfig):
@@ -23,7 +28,7 @@ def patch_features(product: dict[str, Any], config: VscPatchConfig):
     if not extra_features:
         # False, None, or empty list
         return
-    patch_data = json_load(FEATURES_PATCH_PATH)
+    patch_data = get_features_patch_data()
 
     keys_to_apply: set[str] = set()
 
@@ -98,7 +103,7 @@ def patch_pkg(
     if not backups:
         # Create initial backup (snapshot of current state)
         backup_editor_data(pkg)
-        backups = get_backups(pkg) # Refresh list
+        backups = get_backups(pkg)  # Refresh list
 
     if from_backup:
         # Use latest backup
