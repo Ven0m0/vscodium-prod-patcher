@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from sys import argv, stderr, stdout
 from json import load, dump, JSONDecodeError
 
@@ -11,6 +11,7 @@ PRODUCT_JSON_LOCATIONS = tuple((
     "/usr/share/vscodium-insiders-git/resources/app/product.json",
     "/usr/share/vscodium-electron/resources/app/product.json",
     "/usr/share/vscodium-electron-bin/resources/app/product.json",
+    "/usr/lib/vscodium/product.json",
 ))
 
 PRODUCT_LOCATION = None
