@@ -14,7 +14,6 @@ from .singleton import AbstractSingleton
 ArgsT = list[str]
 
 DEFAULT_EDITOR = ["vi"]
-KNOWN_SESSION_TYPES = ["wayland", "x11"]
 
 
 def editor_from_env_var(key: str) -> ArgsT:
