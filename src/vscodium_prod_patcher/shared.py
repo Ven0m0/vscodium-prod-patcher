@@ -28,7 +28,7 @@ def json_load(path: Path):
     try:
         with open(path, "rt", encoding=ENCODING) as file:
             return json.load(file)
-    except (json.JSONDecodeError, OSError) as e:
+    except (ValueError, OSError) as e:
         err(f"Failed to read JSON from '{path}': {e}")
 
 
