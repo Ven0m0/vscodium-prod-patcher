@@ -46,6 +46,8 @@ class MiniPacman(AbstractSingleton):
     _package_files: dict[str, PacmanFiles]
 
     def __init__(self):
+        if hasattr(self, "config"):
+            return
         self.config = PacmanConfig(conf=get_pacman_conf_path())
         self._package_files = {}
 
