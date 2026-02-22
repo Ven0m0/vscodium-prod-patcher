@@ -17,15 +17,25 @@ def err(*args: object, exit_code=1, **kwargs):
 
 
 def text_file_write(path: Path, txt: str):
-    with open(path, "wt", encoding=ENCODING) as file:
-        file.write(txt)
+    try:
+        with open(path, "wt", encoding=ENCODING) as file:
+            file.write(txt)
+    except OSError as e:
+        err(f"Failed to write text to '{path}': {e}")
 
 
 def json_load(path: Path):
-    with open(path, "rt", encoding=ENCODING) as file:
-        return json.load(file)
+    try:
+        with open(path, "rt", encoding=ENCODING) as file:
+            return json.load(file)
+    except (ValueError, OSError) as e:
+        err(f"Failed to read JSON from '{path}': {e}")
 
 
 def json_write(path: Path, obj: Any, *args, **kwargs):
-    with open(path, "wt", encoding=ENCODING) as file:
-        json.dump(obj, file, *args, **kwargs)
+    try:
+        content = json.dumps(obj, *args, **kwargs)
+        with open(path, "wt", encoding=ENCODING) as file:
+            file.write(content)
+    except (OSError, TypeError, ValueError) as e:
+        err(f"Failed to write JSON to '{path}': {e}")
