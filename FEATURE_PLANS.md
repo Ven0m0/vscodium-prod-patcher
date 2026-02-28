@@ -1,38 +1,8 @@
 # Feature Implementation Plans
 
-This document outlines the plans for three key features to enhance the `vscodium-prod-patcher` tool.
+This document outlines the plans for key features to enhance the `vscodium-prod-patcher` tool.
 
-## 1. Eliminate Sub-project Complexity
-
-### Problem Statement
-The current project structure includes a separate sub-project `vscodium_prod_patcher_alpm_ini` located within the `src` directory. This separation adds unnecessary complexity to dependency management, build processes, and the overall directory structure, especially since it is tightly coupled with the main application.
-
-### Proposed Solution
-Merge the `vscodium_prod_patcher_alpm_ini` functionality directly into the main `vscodium_prod_patcher` package. This will streamline the codebase, remove the need for a nested `pyproject.toml`, and simplify imports.
-
-### Implementation Steps
-
-1.  **Move Code:**
-    *   Move `de.py` and `mixin.py` from `src/vscodium_prod_patcher_alpm_ini/vscodium_prod_patcher_alpm_ini/` into `src/vscodium_prod_patcher/pacman/`.
-
-2.  **Update Imports:**
-    *   Update `src/vscodium_prod_patcher/pacman/alpm_ini.py` to import from the local module.
-    *   Change `from vscodium_prod_patcher_alpm_ini.de import alpm_ini_loads` to `from .de import alpm_ini_loads`.
-    *   Change `from vscodium_prod_patcher_alpm_ini.mixin import DataClassAlpmIniMixin` to `from .mixin import DataClassAlpmIniMixin`.
-
-3.  **Cleanup:**
-    *   Remove the `src/vscodium_prod_patcher_alpm_ini` directory entirely.
-
-4.  **Update Dependencies:**
-    *   In the root `pyproject.toml`, remove both occurrences of `"vscodium-prod-patcher-alpm-ini"` from `dependencies` (it is currently listed twice, on lines 12 and 15).
-    *   Ensure `mashumaro` is listed in `dependencies` (it already is).
-
-### Benefits
-*   **Simplified Structure:** Flatter directory hierarchy is easier to navigate.
-*   **Easier Maintenance:** Unified dependency management in a single `pyproject.toml`.
-*   **Reduced Friction:** No need to install a local package in editable mode for development.
-
-## 2. Snapshot-based Backup System
+## 1. Snapshot-based Backup System
 
 ### Problem Statement
 The current backup mechanism overwrites the single `product.json` backup for each package. This means users cannot revert to an older version if a recent patch introduces issues, or if they want to compare different configurations over time.
@@ -65,7 +35,7 @@ Implement a snapshot-based backup system where each backup is saved with a times
 *   **History:** Users can track changes to their `product.json` over time.
 *   **Flexibility:** Easy to switch between different patched states.
 
-## 3. Granular Feature Selection
+## 2. Granular Feature Selection
 
 ### Problem Statement
 Currently, the `extra_features` option is an all-or-nothing toggle that enables all features listed in `features-patch.json`. This forces users to accept unwanted changes (e.g., telemetry or certain Microsoft extensions) if they want any extra features at all.
