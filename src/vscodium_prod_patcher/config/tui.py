@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 from ..hooks.install import write_update_hook_cfg
 from ..shared import eprint
@@ -13,12 +13,10 @@ except ImportError:
     eprint("TUI configuration requires python-inquirer")
     sys.exit(1)
 
-from ..utils.friendlybool import (
-    FRIENDLY_BOOL_STRS, friendly_bool_to_str_opt, friendly_str_to_bool,
-)
 from .main import get_config, save_config
 from .utils import list_vscodium_packages, try_guess_editor_meta
 from ..consts import FEATURE_CATEGORIES
+
 
 def prompt_for_editor_meta_config(pkg: str) -> Optional[VscEditorMetaConfig]:
     print("Manually configure", pkg)
@@ -40,10 +38,7 @@ def prompt_for_editor_meta_config(pkg: str) -> Optional[VscEditorMetaConfig]:
             eprint("Editor path does not exist! Try again.")
             continue
         abs_product_json_path = editor_path / product_json_path
-        if not (
-            abs_product_json_path.exists()
-            and abs_product_json_path.is_file()
-        ):
+        if not (abs_product_json_path.exists() and abs_product_json_path.is_file()):
             eprint("product.json does not exist! Try again.")
             continue
         break
@@ -65,7 +60,7 @@ def config_packages():
         raise RuntimeError("VSCodium is not installed")
     config = get_config()
     packages = config.packages
-    for package in packages:
+    for package in list(packages):
         if package in vscodium_packages:
             continue
         print(f"{package} is not installed. Remove it from config?", end="")
