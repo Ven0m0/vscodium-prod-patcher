@@ -1,9 +1,14 @@
 from typing import Optional
 from ..patch import patch_pkg
 from ..shared import err
-from ..utils.backup import backup_editor_data, restore_editor_data, get_backups
+from ..utils.backup import (
+    backup_editor_data,
+    get_backups,
+    prune_backups,
+    restore_editor_data,
+)
 
-PATCH_SUBCMDS = ["apply", "backup", "restore", "list-backups"]
+PATCH_SUBCMDS = ["apply", "backup", "restore", "list-backups", "prune"]
 
 
 def patch_apply(package_name: str, from_backup: bool):
@@ -31,6 +36,11 @@ def patch_list_backups(package_name: str):
         print(f"- {b}")
 
 
+def patch_prune(package_name: str, keep: int):
+    removed = prune_backups(package_name, keep=keep)
+    print(f"Pruned {removed} backup(s) for {package_name}; kept latest {keep}.")
+
+
 def patch_main(args):
     match args.subcommand:
         case "apply":
@@ -41,5 +51,7 @@ def patch_main(args):
             patch_restore(args.package_name, getattr(args, "backup_id", None))
         case "list-backups":
             patch_list_backups(args.package_name)
+        case "prune":
+            patch_prune(args.package_name, args.keep)
         case _:
             err("bad subcommand")

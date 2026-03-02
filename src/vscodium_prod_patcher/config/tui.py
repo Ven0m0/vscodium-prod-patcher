@@ -15,7 +15,7 @@ except ImportError:
 
 from .main import get_config, save_config
 from .utils import list_vscodium_packages, try_guess_editor_meta
-from ..consts import FEATURE_CATEGORIES
+from ..consts import FEATURE_CATEGORIES, FEATURE_CATEGORY_DESCRIPTIONS
 
 
 def prompt_for_editor_meta_config(pkg: str) -> Optional[VscEditorMetaConfig]:
@@ -91,6 +91,10 @@ def config_features():
     elif isinstance(features.extra_features, list):
         default_features = features.extra_features
 
+    feature_choices = [
+        (k, f"{k}: {FEATURE_CATEGORY_DESCRIPTIONS.get(k, '')}")
+        for k in FEATURE_CATEGORIES
+    ]
     questions = [
         inquirer.List(
             "extensions_source",
@@ -101,7 +105,7 @@ def config_features():
         inquirer.Checkbox(
             "extra_features",
             "Select extra features to enable (Space to select, Enter to confirm)",
-            choices=list(FEATURE_CATEGORIES.keys()),
+            choices=feature_choices,
             default=default_features,
         ),
         inquirer.Text(

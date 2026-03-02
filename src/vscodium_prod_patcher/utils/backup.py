@@ -69,7 +69,7 @@ def get_backups(pkg: str) -> list[str]:
             backups.append(f.name)
 
     # Sort in reverse lexicographical order so newer timestamped backups
-    # (e.g. 'product.json.YYYYMMDD-...') appear before the plain 'product.json'.
+    # (e.g. 'product.json.YYYYMMDD-...') appear before plain 'product.json'.
     backups.sort(reverse=True)
     return backups
 
@@ -99,3 +99,15 @@ def restore_editor_data(pkg: str, backup_id: Optional[str] = None):
         source,
         editor_meta.abs_product_json_path,
     )
+
+
+def prune_backups(pkg: str, keep: int = 5) -> int:
+    """Keep only the latest `keep` backups; return count removed."""
+    backups = get_backups(pkg)
+    if len(backups) <= keep:
+        return 0
+    current_backup_dir = BACKUPS_DIR / pkg
+    to_remove = backups[keep:]
+    for name in to_remove:
+        (current_backup_dir / name).unlink()
+    return len(to_remove)

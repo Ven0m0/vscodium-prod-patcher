@@ -55,7 +55,7 @@ def main():
 
     # Define patch subcommands that take a package name
     patch_cmds = {}
-    for subcmd in ["backup", "restore", "list-backups"]:
+    for subcmd in ["backup", "restore", "list-backups", "prune"]:
         p = subp_patch.add_parser(subcmd)
         p.add_argument("package_name", help="package name")
         patch_cmds[subcmd] = p
@@ -65,6 +65,12 @@ def main():
         "--backup-id",
         help="Specific backup timestamp or filename to restore",
         default=None
+    )
+    patch_cmds["prune"].add_argument(
+        "--keep",
+        type=int,
+        default=5,
+        help="Keep this many latest backups (default: 5)",
     )
 
     patch_apply = subp_patch.add_parser("apply")
