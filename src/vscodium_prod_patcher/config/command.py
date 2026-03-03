@@ -40,9 +40,11 @@ def config_main(args):
             config_edit()
         case "features":
             from .tui import config_features
+
             config_features()
         case "packages":
             from .tui import config_packages
+
             config_packages()
         case _:
             err("invalid config type")

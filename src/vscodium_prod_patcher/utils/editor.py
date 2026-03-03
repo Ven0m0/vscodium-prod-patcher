@@ -87,8 +87,10 @@ class EditorWrap(AbstractSingleton):
         stat = self._pre_edit_check(file)
         self._edit_file(file)
         new_stat = file.stat()
-        return stat.st_mtime != new_stat.st_mtime \
+        return (
+            stat.st_mtime != new_stat.st_mtime
             or stat.st_mtime_ns != new_stat.st_mtime_ns
+        )
 
     def _edit_file_as_root(self, file: Path):
         with TemporaryDirectory() as tmpdir:
@@ -106,5 +108,7 @@ class EditorWrap(AbstractSingleton):
         else:
             self._edit_file_as_root(file)
         new_stat = file.stat()
-        return stat.st_mtime != new_stat.st_mtime \
+        return (
+            stat.st_mtime != new_stat.st_mtime
             or stat.st_mtime_ns != new_stat.st_mtime_ns
+        )

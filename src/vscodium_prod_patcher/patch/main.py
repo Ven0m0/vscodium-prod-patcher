@@ -10,9 +10,11 @@ from ..paths import BACKUPS_DIR, DATA_DIR
 from ..shared import json_load, json_write
 from ..utils.backup import backup_editor_data, get_backups
 from ..utils.print import pacinfo, pacwarn
-from .extension_galleries import (EXTENSIONS_MS_GALLERY,
-                                  EXTENSIONS_OPENVSX_GALLERY,
-                                  EXTENSIONS_OPENVSX_TRUSTED)
+from .extension_galleries import (
+    EXTENSIONS_MS_GALLERY,
+    EXTENSIONS_OPENVSX_GALLERY,
+    EXTENSIONS_OPENVSX_TRUSTED,
+)
 
 FEATURES_PATCH_PATH = DATA_DIR / "patch/features-patch.json"
 TDKEY = "linkProtectionTrustedDomains"
@@ -133,11 +135,7 @@ def patch_pkgs(
 ):
     config = get_config()
     conf_packages = config.packages
-    changed_packages = [
-        pkg
-        for pkg in packages
-        if pkg in conf_packages
-    ]
+    changed_packages = [pkg for pkg in packages if pkg in conf_packages]
     for pkg in changed_packages:
         patch_pkg(
             pkg,

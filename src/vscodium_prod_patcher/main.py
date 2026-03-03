@@ -46,7 +46,8 @@ def main():
     parser_hook = subparsers.add_parser("hook", help="Run a hook")
     parser_hook.add_argument("name", help="Hook name")
     parser_patch = subparsers.add_parser(
-        "patch", help="Manually patch a VSCodium installation",
+        "patch",
+        help="Manually patch a VSCodium installation",
     )
     subp_patch = parser_patch.add_subparsers(
         dest="subcommand",
@@ -64,7 +65,7 @@ def main():
     patch_cmds["restore"].add_argument(
         "--backup-id",
         help="Specific backup timestamp or filename to restore",
-        default=None
+        default=None,
     )
     patch_cmds["prune"].add_argument(
         "--keep",

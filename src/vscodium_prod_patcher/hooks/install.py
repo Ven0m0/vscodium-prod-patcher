@@ -28,14 +28,12 @@ def get_bin_path() -> Path:
 def write_update_hook(packages: list[str]):
     if not packages:
         raise ValueError(WUPD_HOOK_ERR_MSG)
-    targets = "\n".join([
-        HOOK_TARGET_TEMPLATE.format(pkg=pkg)
-        for pkg in packages
-    ])
+    targets = "\n".join([HOOK_TARGET_TEMPLATE.format(pkg=pkg) for pkg in packages])
     bin_path = get_bin_path()
     hook_contents = HOOK_TEMPLATE.format(
         bin=bin_path,
-        name=NAME, targets=targets,
+        name=NAME,
+        targets=targets,
     )
     HOOKS_DIR.mkdir(parents=True, exist_ok=True)
     text_file_write(HOOK_FILE, hook_contents)

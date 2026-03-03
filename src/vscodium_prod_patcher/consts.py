@@ -9,14 +9,14 @@ FEATURE_CATEGORIES = {
         "extensionKind",
         "extensionPointExtensionKind",
         "extensionSyncedKeys",
-        "extensionVirtualWorkspacesSupport"
+        "extensionVirtualWorkspacesSupport",
     ],
     "auth": ["auth", "trustedExtensionAuthAccess"],
     "settings-sync": [
         "configurationSync.store",
         "editSessions.store",
         "tunnelApplicationName",
-        "tunnelApplicationConfig"
+        "tunnelApplicationConfig",
     ],
 }
 

@@ -33,14 +33,11 @@ LOG_ERROR = 1
 LOG_FUNCTION = 8
 LOG_WARNING = 2
 
-
 def version() -> str: ...
 def alpmversion() -> str: ...
 def vercmp(version1: str, version2: str) -> int: ...
 
-
 _GroupTupleT = tuple[str, list[Package]]
-
 
 class DB:
     # read-only
@@ -55,7 +52,6 @@ class DB:
     def read_grp(self, grpname: str) -> Optional[list[_GroupTupleT]]: ...
     def search(self, *args: str) -> list[Package]: ...
     def update(self, force: bool) -> bool: ...
-
 
 class Package:
     db: Database
@@ -99,7 +95,6 @@ class Package:
     def compute_requiredby(self) -> list[str]: ...
     def compute_optionalfor(self) -> list[str]: ...
 
-
 class Database:
     name: str
     servers: list
@@ -111,10 +106,7 @@ class Database:
     def search(self, query: str) -> list[Package]: ...
     def read_grp(self, group: str) -> Optional[list[_GroupTupleT]]: ...
 
-
-class Transaction:
-    ...
-
+class Transaction: ...
 
 class Handle:
     arch: list[str]
@@ -166,7 +158,6 @@ class Handle:
         recurseall: bool,
         nolock: bool,
     ) -> Transaction: ...
-
 
 class error(Exception):
     args: tuple[str, int, str]

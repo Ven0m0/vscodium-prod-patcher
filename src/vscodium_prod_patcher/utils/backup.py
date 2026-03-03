@@ -35,9 +35,9 @@ def backup_json_file(
 
 def backup_editor_data(pkg: str):
     config = get_config()
-    load_and_dump_json_files = \
-        config.debug is not None \
-        and bool(config.debug.load_and_dump_json_files)
+    load_and_dump_json_files = config.debug is not None and bool(
+        config.debug.load_and_dump_json_files
+    )
     editor_meta = config.packages[pkg].meta
     current_backup_dir = BACKUPS_DIR / pkg
     os.makedirs(current_backup_dir, exist_ok=True)

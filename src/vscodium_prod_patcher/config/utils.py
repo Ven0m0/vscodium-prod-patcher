@@ -37,8 +37,10 @@ def list_vscodium_packages(exclude_debug: bool = True) -> list[str]:
     packages = list(filter(_VSCODIUM_REGEX.match, packages))
     packages.remove(NAME)
     if exclude_debug:
+
         def no_debug(pkg: str) -> bool:
             return not pkg.endswith("-debug")
+
         packages = list(filter(no_debug, packages))
     return packages
 
@@ -66,15 +68,8 @@ def try_product_json_path_from_editor_path(
 def try_product_json_from_pkg_files(
     pkg_files: list[str],
 ) -> Optional[Path]:
-    pkg_files_p = [
-        Path(path)
-        for path in pkg_files
-    ]
-    product_json_files = [
-        path
-        for path in pkg_files_p
-        if path.name == "product.json"
-    ]
+    pkg_files_p = [Path(path) for path in pkg_files]
+    product_json_files = [path for path in pkg_files_p if path.name == "product.json"]
     if len(product_json_files) != 1:
         return None
     return Path("/") / product_json_files[0]

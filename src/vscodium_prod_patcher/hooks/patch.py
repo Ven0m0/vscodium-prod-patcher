@@ -5,10 +5,7 @@ from ..utils.backup import backup_editor_data
 
 
 def hook_patch():
-    changed_packages = [
-        str(line).strip()
-        for line in sys.stdin
-    ]
+    changed_packages = [str(line).strip() for line in sys.stdin]
     if not changed_packages:
         return
     for pkg in changed_packages:
