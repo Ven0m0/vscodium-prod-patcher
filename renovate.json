@@ -8,68 +8,30 @@
     "group:all",
     "packages:linters",
     "schedule:weekly",
-    "customManagers:biomeVersions",
     ":dependencyDashboard",
     ":automergeBranch",
     ":automergeMinor",
-    ":combinePatchMinorReleases",
     ":ignoreModulesAndTests",
-    ":rebaseStalePrs",
     "docker:enableMajor",
     "preview:dockerCompose",
     ":enablePreCommit"
   ],
-  "enabled": true,
-  "dependencyDashboard": true,
-  "forkProcessing": "enabled",
   "automerge": true,
-  "automergeType": "branch",
-  "rebaseWhen": "auto",
+  "forkProcessing": "enabled",
   "ignoreTests": true,
-  "pinDigests": false,
-  "separateMajorMinor": false,
-  "separateMinorPatch": false,
-  "ignoreUnstable": true,
-  "prCreation": "immediate",
-  "prConcurrentLimit": 10,
-  "respectLatest": true,
   "abandonmentThreshold": "2 years",
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
-    "commitMessageAction": "Update",
     "extends": ["schedule:monthly"]
   },
   "labels": ["dependencies"],
   "timezone": "Europe/Berlin",
-  "pre-commit": {
-    "enabled": true
-  },
-  "npm": {
-    "enabled": true
-  },
-  "docker-compose": {
-    "enabled": true
-  },
-  "dockerfile": {
-    "enabled": true
-  },
   "cargo": {
     "rangeStrategy": "update-lockfile"
   },
-  "postUpdateOptions": [
-    "yarnDedupeHighest",
-    "gomodTidy",
-    "pnpmDedupe"
-  ],
+  "postUpdateOptions": ["yarnDedupeHighest", "gomodTidy", "pnpmDedupe"],
   "packageRules": [
-    {
-      "description": "Automerge all stable (non-0.x) updates via branch",
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": ["minor", "patch"]
-    },
     {
       "description": "Require dashboard approval for 0.x major bumps",
       "matchCurrentVersion": "/^0/",
@@ -78,10 +40,8 @@
       "automerge": false
     },
     {
-      "description": "Automerge linters and formatters aggressively",
+      "description": "Automerge linters at any time, bypassing weekly schedule",
       "matchCategories": ["linters"],
-      "automerge": true,
-      "automergeType": "branch",
       "schedule": ["at any time"]
     }
   ],
