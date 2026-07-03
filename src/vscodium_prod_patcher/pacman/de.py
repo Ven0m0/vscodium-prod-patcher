@@ -1,7 +1,7 @@
 import re
 from typing import Any
 
-KEY_RE = r"^%([A-Z]+)%$"
+KEY_RE = re.compile(r"^%([A-Z]+)%$")
 
 
 def alpm_ini_loads(data: str) -> dict[str, Any]:
@@ -10,7 +10,7 @@ def alpm_ini_loads(data: str) -> dict[str, Any]:
     value: list[str] = []
     for line in data.splitlines():
         if key is None:
-            m = re.match(KEY_RE, line)
+            m = KEY_RE.match(line)
             if m is None:
                 continue
             key = m.group(1).lower()
