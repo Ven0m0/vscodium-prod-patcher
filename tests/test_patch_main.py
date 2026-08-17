@@ -24,8 +24,10 @@ mock_modules = {
 }
 
 for mod_name, mock_obj in mock_modules.items():
-    if mod_name not in sys.modules:
-        sys.modules[mod_name] = mock_obj
+    try:
+        __import__(mod_name, fromlist=["_"])
+    except Exception:
+        sys.modules.setdefault(mod_name, mock_obj)
 
 from vscodium_prod_patcher.config.schema import VscPatchConfig  # noqa: E402
 from vscodium_prod_patcher.patch.extension_galleries import (  # noqa: E402
