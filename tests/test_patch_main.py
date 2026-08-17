@@ -1,6 +1,7 @@
 import sys
 from unittest.mock import MagicMock
 
+
 class MockDataClassMixin:
     @classmethod
     def from_dict(cls, d):
